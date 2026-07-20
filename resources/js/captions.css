@@ -1,0 +1,21 @@
+/* Kairo captions skin */
+.vds-captions [data-part='cue-display'] {
+    background-color: transparent !important;
+}
+
+.vds-captions [data-part='cue'] {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    color: #ffffff !important;
+    padding: 3px 10px !important;
+    border-radius: 6px !important;
+    border-bottom: 2px solid hsl(217, 91%, 60%) !important;
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.015em;
+    text-shadow:
+        0 0 1px #000, 0 0 2px #000,
+        0.6px 0.6px 0 #000, -0.6px 0.6px 0 #000,
+        0.6px -0.6px 0 #000, -0.6px -0.6px 0 #000,
+        0 0.6px 0 #000, 0 -0.6px 0 #000,
+        0.6px 0 0 #000, -0.6px 0 0 #000 !important;
+}

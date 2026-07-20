@@ -1,0 +1,189 @@
+config:
+  target: "http://localhost/kairo/public"
+  phases:
+    - name: "Warm up"
+      duration: 15
+      arrivalRate: 3
+    - name: "Ramp up a 20 flujos"
+      duration: 30
+      arrivalRate: 5
+    - name: "20 flujos constantes"
+      duration: 60
+      arrivalRate: 5
+    - name: "Ramp up a 50 flujos"
+      duration: 30
+      arrivalRate: 10
+    - name: "50 flujos constantes"
+      duration: 60
+      arrivalRate: 10
+    - name: "Enfriamiento"
+      duration: 15
+      arrivalRate: 2
+  ensure:
+    thresholds:
+      - http.response_time.p99: 5000
+      - http.response_time.p95: 3000
+  plugins:
+    metrics-by-endpoint:
+      useOnlyRequestNames: true
+
+scenarios:
+  - name: "Flujo completo: Login → Navegar → Ver anime → Comentar"
+    weight: 70
+    flow:
+      # 1. Ir a login
+      - get:
+          url: "/login"
+          name: "GET Login Page"
+
+      # 2. Obtener CSRF token
+      - get:
+          url: "/login"
+          name: "GET CSRF Token"
+          capture:
+            - header: "set-cookie"
+              as: "cookie"
+            - selector: 'meta[name="csrf-token"]'
+              attribute: "content"
+              as: "csrf_token"
+
+      # 3. Login
+      - post:
+          url: "/login"
+          name: "POST Login"
+          json:
+            email: "test@kairo.dev"
+            password: "password"
+          headers:
+            X-CSRF-TOKEN: "{{csrf_token}}"
+            Cookie: "{{cookie}}"
+          followRedirect: false
+
+      # 4. Navegar home autenticado
+      - think: 2
+      - get:
+          url: "/"
+          name: "Home (auth)"
+
+      # 5. Explorar catálogo
+      - think: 1
+      - get:
+          url: "/explore"
+          name: "Explore"
+
+      # 6. Ver un anime
+      - think: 2
+      - get:
+          url: "/anime/kimetsu-no-yaiba-8zoXH"
+          name: "Anime Show"
+
+      # 7. Ver otro anime
+      - think: 1
+      - get:
+          url: "/anime/shingeki-no-kyojin-ASt2a"
+          name: "Anime Show 2"
+
+      # 8. Buscar
+      - think: 1
+      - get:
+          url: "/api/search?q=kimetsu"
+          name: "API Search"
+
+      # 9. Ver simulcast
+      - think: 1
+      - get:
+          url: "/simulcast"
+          name: "Simulcast"
+
+      # 10. Ver calendario
+      - think: 1
+      - get:
+          url: "/calendario"
+          name: "Calendario"
+
+      # 11. Ver watchlist
+      - think: 1
+      - get:
+          url: "/mi-lista"
+          name: "Watchlist"
+
+      # 12. Ver favoritos
+      - think: 1
+      - get:
+          url: "/favoritos"
+          name: "Favoritos"
+
+      # 13. Ver historial
+      - think: 1
+      - get:
+          url: "/historial"
+          name: "Historial"
+
+      # 14. Ver perfil
+      - think: 1
+      - get:
+          url: "/perfil/test"
+          name: "Perfil"
+
+      # 15. Ir a ver episodio
+      - think: 2
+      - get:
+          url: "/watch/1"
+          name: "Watch Episode"
+
+      # 16. Marcar progreso
+      - think: 3
+      - post:
+          url: "/watch/1/progress"
+          name: "Update Progress"
+          json:
+            progress: 50
+            duration: 1440
+          headers:
+            X-CSRF-TOKEN: "{{csrf_token}}"
+
+      # 17. Cerrar sesion
+      - think: 1
+      - post:
+          url: "/logout"
+          name: "POST Logout"
+          headers:
+            X-CSRF-TOKEN: "{{csrf_token}}"
+
+  - name: "Flujo de solo lectura (sin login)"
+    weight: 30
+    flow:
+      - loop:
+          - get:
+              url: "/"
+              name: "Home (anon)"
+          - think: 2
+          - get:
+              url: "/explore"
+              name: "Explore (anon)"
+          - think: 2
+          - get:
+              url: "/anime/kimetsu-no-yaiba-8zoXH"
+              name: "Anime (anon)"
+          - think: 1
+          - get:
+              url: "/simulcast"
+              name: "Simulcast (anon)"
+          - think: 1
+          - get:
+              url: "/api/search?q=shingeki"
+              name: "Search (anon)"
+          - think: 1
+          - get:
+              url: "/anime/blue-lock-season-3-F4MNj"
+              name: "Anime 2 (anon)"
+          - think: 2
+          - get:
+              url: "/anime/dandadan-H5Mjr"
+              name: "Anime 3 (anon)"
+          - think: 1
+          - get:
+              url: "/calendario"
+              name: "Calendar (anon)"
+          - think: 1
+        count: 2

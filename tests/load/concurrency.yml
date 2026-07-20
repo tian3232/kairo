@@ -1,0 +1,77 @@
+config:
+  target: "http://localhost/kairo/public"
+  phases:
+    - name: "Warm up"
+      duration: 15
+      arrivalRate: 3
+    - name: "Ramp up a 50 usuarios"
+      duration: 30
+      arrivalRate: 10
+    - name: "50 usuarios constantes"
+      duration: 60
+      arrivalRate: 10
+    - name: "Ramp up a 100 usuarios"
+      duration: 30
+      arrivalRate: 20
+    - name: "100 usuarios constantes"
+      duration: 60
+      arrivalRate: 20
+    - name: "Ramp up a 200 usuarios"
+      duration: 30
+      arrivalRate: 40
+    - name: "Pico 200 usuarios"
+      duration: 60
+      arrivalRate: 40
+    - name: "Enfriamiento"
+      duration: 15
+      arrivalRate: 5
+  defaults:
+    headers:
+      Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      Accept-Language: "es-ES,es;q=0.9,en;q=0.8"
+  ensure:
+    thresholds:
+      - http.response_time.p99: 5000
+      - http.response_time.p95: 3000
+  plugins:
+    metrics-by-endpoint:
+      useOnlyRequestNames: true
+
+scenarios:
+  - name: "Usuarios navegando la plataforma"
+    weight: 100
+    flow:
+      - loop:
+          - get:
+              url: "/"
+              name: "Home"
+          - think: 2
+          - get:
+              url: "/explore"
+              name: "Explore"
+          - think: 2
+          - get:
+              url: "/anime/kimetsu-no-yaiba-8zoXH"
+              name: "Anime Show"
+          - think: 2
+          - get:
+              url: "/simulcast"
+              name: "Simulcast"
+          - think: 1
+          - get:
+              url: "/calendario"
+              name: "Calendario"
+          - think: 1
+          - get:
+              url: "/api/search?q=kimetsu"
+              name: "API Search"
+          - think: 1
+          - get:
+              url: "/anime/shingeki-no-kyojin-ASt2a"
+              name: "Anime Show 2"
+          - think: 2
+          - get:
+              url: "/anime/jujutsu-kaisen-ZRW3Q"
+              name: "Anime Show 3"
+          - think: 1
+        count: 3

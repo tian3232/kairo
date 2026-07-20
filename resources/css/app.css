@@ -1,0 +1,389 @@
+@import 'tailwindcss';
+
+@plugin 'tailwindcss-animate';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+@theme {
+    --font-sans:
+        'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --radius-lg: var(--radius);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-sm: calc(var(--radius) - 4px);
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --color-kairo: var(--kairo);
+    --color-kairo-light: var(--kairo-light);
+    --color-kairo-dark: var(--kairo-dark);
+
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+
+    --color-sidebar: var(--sidebar-background);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+
+    --animate-fade-in: fade-in 0.4s ease-out;
+    --animate-fade-in-up: fade-in-up 0.5s ease-out;
+    --animate-fade-in-down: fade-in-down 0.4s ease-out;
+    --animate-scale-in: scale-in 0.3s ease-out;
+    --animate-slide-in-left: slide-in-left 0.4s ease-out;
+    --animate-slide-in-right: slide-in-right 0.4s ease-out;
+    --animate-glow-pulse: glow-pulse 2s ease-in-out infinite;
+    --animate-shimmer: shimmer 2s linear infinite;
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in-down {
+    from { opacity: 0; transform: translateY(-12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slide-in-left {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slide-in-right {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 hsla(217, 91%, 60%, 0); }
+    50% { box-shadow: 0 0 20px 4px hsla(217, 91%, 60%, 0.15); }
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+@keyframes dot-pulse {
+    0%, 100% { opacity: 0.6; filter: drop-shadow(0 0 0px hsla(217, 91%, 60%, 0)); }
+    50% { opacity: 1; filter: drop-shadow(0 0 6px hsla(217, 91%, 60%, 0.7)); }
+}
+
+@keyframes logo-bg-in {
+    0% { opacity: 0; transform: scale(0.3); }
+    70% { opacity: 1; transform: scale(1.05); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes stroke-draw {
+    0% { stroke-dashoffset: 200; opacity: 0; }
+    10% { opacity: 1; }
+    100% { stroke-dashoffset: 0; opacity: 1; }
+}
+
+@keyframes k-fill-in {
+    0% { fill-opacity: 0; }
+    100% { fill-opacity: 1; }
+}
+
+@keyframes dot-flash {
+    0% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1.8); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes dot-glow-flash {
+    0% { filter: drop-shadow(0 0 0px hsla(200, 100%, 70%, 0)); }
+    50% { filter: drop-shadow(0 0 12px hsla(200, 100%, 70%, 0.9)); }
+    100% { filter: drop-shadow(0 0 4px hsla(200, 100%, 70%, 0.3)); }
+}
+
+@keyframes letter-reveal {
+    0% { opacity: 0; transform: translateY(8px); filter: blur(4px); }
+    100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+@keyframes text-shimmer-sweep {
+    0% { background-position: -100% 0; }
+    100% { background-position: 200% 0; }
+}
+
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
+
+/* ─── THEME (dark only) ───────────────────────────────────── */
+:root {
+    --background: hsl(222, 20%, 6%);
+    --foreground: hsl(210, 20%, 96%);
+    --card: hsl(222, 20%, 8%);
+    --card-foreground: hsl(210, 20%, 96%);
+    --popover: hsl(222, 25%, 10%);
+    --popover-foreground: hsl(210, 20%, 96%);
+
+    --primary: hsl(217, 91%, 60%);
+    --primary-foreground: hsl(0, 0%, 100%);
+
+    --secondary: hsl(217, 20%, 14%);
+    --secondary-foreground: hsl(210, 15%, 85%);
+
+    --muted: hsl(217, 20%, 12%);
+    --muted-foreground: hsl(215, 15%, 55%);
+
+    --accent: hsl(217, 40%, 16%);
+    --accent-foreground: hsl(217, 91%, 75%);
+
+    --destructive: hsl(0, 72%, 51%);
+    --destructive-foreground: hsl(0, 0%, 100%);
+
+    --border: hsl(217, 20%, 14%);
+    --input: hsl(217, 20%, 14%);
+    --ring: hsl(217, 91%, 60%);
+
+    --kairo: hsl(217, 91%, 60%);
+    --kairo-light: hsl(217, 91%, 70%);
+    --kairo-dark: hsl(217, 91%, 45%);
+
+    --chart-1: hsl(217, 91%, 60%);
+    --chart-2: hsl(160, 60%, 45%);
+    --chart-3: hsl(30, 80%, 55%);
+    --chart-4: hsl(280, 65%, 60%);
+    --chart-5: hsl(340, 75%, 55%);
+
+    --radius: 0.625rem;
+
+    --sidebar-background: hsl(222, 25%, 8%);
+    --sidebar-foreground: hsl(215, 15%, 70%);
+    --sidebar-primary: hsl(217, 91%, 65%);
+    --sidebar-primary-foreground: hsl(0, 0%, 100%);
+    --sidebar-accent: hsl(217, 40%, 14%);
+    --sidebar-accent-foreground: hsl(210, 15%, 85%);
+    --sidebar-border: hsl(217, 20%, 14%);
+    --sidebar-ring: hsl(217, 91%, 60%);
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground antialiased;
+    }
+}
+
+/* ─── GLOBAL ANIMATION UTILITIES ───────────────────────────── */
+@layer utilities {
+    .animate-in-up {
+        animation: fade-in-up 0.5s ease-out both;
+    }
+
+    .animate-in-down {
+        animation: fade-in-down 0.4s ease-out both;
+    }
+
+    .animate-in-left {
+        animation: slide-in-left 0.4s ease-out both;
+    }
+
+    .animate-in-right {
+        animation: slide-in-right 0.4s ease-out both;
+    }
+
+    .animate-scale {
+        animation: scale-in 0.3s ease-out both;
+    }
+
+    .animate-glow {
+        animation: glow-pulse 2s ease-in-out infinite;
+    }
+
+    .animate-shimmer {
+        background: linear-gradient(90deg, transparent 0%, hsla(217, 91%, 60%, 0.08) 50%, transparent 100%);
+        background-size: 200% 100%;
+        animation: shimmer 2s linear infinite;
+    }
+
+    .animate-logo-bg-in {
+        animation: logo-bg-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    .kairo-k-stroke {
+        stroke-dasharray: 200;
+        stroke-dashoffset: 200;
+        animation: stroke-draw 0.6s ease-out 0.3s both;
+    }
+
+    .kairo-k-fill {
+        fill-opacity: 0;
+        animation: k-fill-in 0.2s ease-out 0.7s both;
+    }
+
+    .kairo-dot-flash {
+        opacity: 0;
+        transform-origin: center;
+        animation: dot-flash 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.85s both,
+                   dot-glow-flash 0.6s ease-out 0.85s both;
+    }
+
+    .kairo-letter {
+        opacity: 0;
+        animation: letter-reveal 0.3s ease-out both;
+    }
+
+    .kairo-text-shimmer {
+        background: linear-gradient(90deg, var(--foreground) 0%, var(--foreground) 40%, hsla(217, 91%, 60%, 0.8) 50%, var(--foreground) 60%, var(--foreground) 100%);
+        background-size: 200% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+    }
+
+    .kairo-logo-wrapper:hover .kairo-text-shimmer {
+        animation: text-shimmer-sweep 0.8s ease-out forwards;
+    }
+
+    .kairo-logo-wrapper:hover .kairo-icon {
+        filter: drop-shadow(0 0 8px hsla(217, 91%, 60%, 0.4));
+        transform: scale(1.05);
+    }
+
+    .kairo-icon {
+        transition: filter 0.3s ease, transform 0.3s ease;
+    }
+
+    .delay-75 { animation-delay: 75ms; }
+    .delay-150 { animation-delay: 150ms; }
+    .delay-300 { animation-delay: 300ms; }
+
+    .kairo-glow {
+        box-shadow: 0 0 0 0 hsla(217, 91%, 60%, 0);
+        transition: box-shadow 0.3s ease;
+    }
+    .kairo-glow:hover {
+        box-shadow: 0 0 24px -2px hsla(217, 91%, 60%, 0.25);
+    }
+
+    .kairo-border-glow {
+        transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .kairo-border-glow:hover {
+        border-color: hsl(217, 91%, 60%);
+        box-shadow: 0 0 16px -4px hsla(217, 91%, 60%, 0.2);
+    }
+}
+
+/* ─── SCROLLBAR STYLING ────────────────────────────────────── */
+html {
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: hsl(217, 91%, 60%) transparent;
+}
+
+html::-webkit-scrollbar {
+    width: 6px;
+    display: block;
+}
+
+html::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+html::-webkit-scrollbar-thumb {
+    background: hsl(217, 91%, 60%);
+    border-radius: 999px;
+}
+
+html::-webkit-scrollbar-thumb:hover {
+    background: hsl(217, 91%, 70%);
+}
+
+/* ─── FOCUS RING OVERRIDE (blue) ───────────────────────────── */
+*:focus-visible {
+    outline: 2px solid hsl(217, 91%, 60%);
+    outline-offset: 2px;
+}
+
+/* ─── VIDSTACK PLAYER ──────────────────────────────────────── */
+[data-media-player]:not([data-started]) [data-media-provider] {
+    position: relative;
+}
+
+[data-media-player]:not([data-started]) [data-media-provider]::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: black;
+    z-index: 2;
+}
+
+[data-media-player][data-layout='video'] {
+    background-color: black !important;
+}
+
+/* ─── SELECT OPTIONS ───────────────────────────────────────── */
+select option {
+    background-color: var(--input);
+    color: var(--foreground);
+}
+
+/* ─── SELECTION HIGHLIGHT ──────────────────────────────────── */
+::selection {
+    background-color: hsla(217, 91%, 60%, 0.25);
+    color: inherit;
+}
+
+/* ─── FORCED DARK MODE ─────────────────────────────────────── */
+html {
+    color-scheme: dark;
+}
